@@ -1,3 +1,5 @@
+import Head from 'next/head';
+import Script from 'next/script';
 import React, { useState, useEffect } from 'react';
 import BarGraph from '../src/components/bar-graph';
 import getModelData from './api/get/getModelData';
@@ -32,7 +34,28 @@ const Dashboard = () => {
     <>
       {barData.length && (
         <div className="display-flex graph-container">
-          <div className="point-graph">
+          <Head>
+            <script src="https://html2canvas.hertzen.com/dist/html2canvas.js" ></script>
+            <script dangerouslySetInnerHTML={{
+              __html: `
+        const ok = "OK";
+        console.log(ok);
+function download(){
+  let container = document.getElementById("container");
+  html2canvas(container)
+    .then(function(canvas){
+      var dataURL = canvas.toDataURL();
+      const div = document.getElementById("download");
+      div.innerHTML = '<a id="a1" href="' + dataURL + '" download="down.png" >download</a>';
+      document.getElementById("a1").click();
+
+    });
+}
+                  `
+            }}>
+            </script>
+          </Head>
+          <div className="point-graph" id="container" >
             <PointGraph
               parent={'point-graph-svg'}
               data={barData}
@@ -50,7 +73,7 @@ const Dashboard = () => {
           </div>
           <div className="model-summary-graphs">
             <div className="model-summary">
-              <h3>Summary</h3>
+              <h3>Summary <button onclick="javascript:download()" >download</button></h3>
               <hr />
               <h4>
                 <b>{barData[currentPointIndex].name}</b> was run on{' '}
@@ -101,6 +124,7 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+          <div id="download" ></div>
         </div>
       )}
     </>
