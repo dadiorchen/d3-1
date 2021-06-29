@@ -1,3 +1,5 @@
+import Head from 'next/head';
+import Script from 'next/script';
 import React from 'react';
 import { connect } from 'react-redux';
 
@@ -55,8 +57,40 @@ const Playground = (props) => {
   return (
     <>
       <div className="playground-container">
+          <Head>
+            <script src="https://html2canvas.hertzen.com/dist/html2canvas.js" ></script>
+            <script dangerouslySetInnerHTML={{
+              __html: `
+        const ok = "OK";
+        console.log(ok);
+function download(){
+  let container = document.getElementById("frame-1");
+  html2canvas(container,{
+            onclone: (element) => {
+//                const svgElements = document.getElementById("frame-1").getElementsByTagName("svg");
+//                Array.from(svgElements).forEach((svgElement) => {
+//                    const bBox = svgElement.getBBox();
+//                    svgElement.setAttribute("width", bBox.width);
+//                    svgElement.setAttribute("height", bBox.height);
+//                });
+            },
+        } )
+    .then(function(canvas){
+      var dataURL = canvas.toDataURL();
+      const div = document.getElementById("download");
+      div.innerHTML = '<a id="a1" href="' + dataURL + '" download="down.png" >download</a>';
+      document.getElementById("a1").click();
+
+    });
+}
+                  `
+            }}>
+            </script>
+          </Head>
+          <button style={{position:'absolute'}} onclick="javascript:download()" >download</button>
         <Toolbar />
         <div className="graph-playground">{renderGraphs(allIdAndType)}</div>
+          <div id="download" ></div>
       </div>
     </>
   );
