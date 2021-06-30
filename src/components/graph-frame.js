@@ -22,12 +22,14 @@ const GraphFrame = (props) => {
     generatePNGAndDownload(
       document.getElementById(`frame-${id}`),
       () => {
+        document.getElementById(`frame-${id}`).style.border = "5px solid white";
         Array.from(document.getElementsByClassName("GraphFrame_deleteGraph__3ldRg")).forEach(e => e.style.display = "none");
         //TODO hard code
         document.getElementById(`barChart-${id}`).setAttribute("height", "395px");
         document.getElementById(`barChart-${id}`).setAttribute("width", "393px");
       },
       () => {
+        document.getElementById(`frame-${id}`).style.removeProperty("border");
         Array.from(document.getElementsByClassName("GraphFrame_deleteGraph__3ldRg")).forEach(e => e.style.display = "");
         document.getElementById(`barChart-${id}`).removeAttribute("height");
         document.getElementById(`barChart-${id}`).removeAttribute("width");
