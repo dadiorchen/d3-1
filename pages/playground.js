@@ -61,36 +61,30 @@ const Playground = (props) => {
             <script src="https://html2canvas.hertzen.com/dist/html2canvas.js" ></script>
             <script dangerouslySetInnerHTML={{
               __html: `
-        const ok = "OK";
-        console.log(ok);
-function download(){
-  let container = document.getElementById("frame-1");
-  html2canvas(container,{
-            onclone: (element) => {
-//                const svgElements = document.getElementById("frame-1").getElementsByTagName("svg");
-//                Array.from(svgElements).forEach((svgElement) => {
-//                    const bBox = svgElement.getBBox();
-//                    svgElement.setAttribute("width", bBox.width);
-//                    svgElement.setAttribute("height", bBox.height);
-//                });
-            },
-        } )
+/*
+ * Generate the png by given the html element, call beforeHook before 
+ * the process, and afterHook when it's done.
+ */
+function generatePNGAndDownload(container, beforeHook, afterHook){
+  beforeHook && beforeHook();
+  html2canvas(container)
     .then(function(canvas){
       var dataURL = canvas.toDataURL();
-      const div = document.getElementById("download");
-      div.innerHTML = '<a id="a1" href="' + dataURL + '" download="down.png" >download</a>';
+      const div = document.createElement("div");
+      document.body.appendChild(div);
+      //div.innerHTML = '<img id="i1" src="' + dataURL + '"  />';
+      div.innerHTML = '<a id="a1" href="' + dataURL + '" download="down.png" style="display:none" >download</a>';
       document.getElementById("a1").click();
-
+      afterHook && afterHook();
+      document.body.removeChild(div);
     });
 }
                   `
             }}>
             </script>
           </Head>
-          <button style={{position:'absolute'}} onclick="javascript:download()" >download</button>
         <Toolbar />
         <div className="graph-playground">{renderGraphs(allIdAndType)}</div>
-          <div id="download" ></div>
       </div>
     </>
   );

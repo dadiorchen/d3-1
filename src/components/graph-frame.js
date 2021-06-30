@@ -16,10 +16,33 @@ const GraphFrame = (props) => {
     setSelectedGraph(id);
   };
 
+  const handleDownload = (data) => {
+    console.log("download:", data);
+    const {id} = data;
+    generatePNGAndDownload(
+      document.getElementById(`frame-${id}`),
+      () => {
+        Array.from(document.getElementsByClassName("GraphFrame_deleteGraph__3ldRg")).forEach(e => e.style.display = "none");
+        //TODO hard code
+        document.getElementById(`barChart-${id}`).setAttribute("height", "395px");
+        document.getElementById(`barChart-${id}`).setAttribute("width", "393px");
+      },
+      () => {
+        Array.from(document.getElementsByClassName("GraphFrame_deleteGraph__3ldRg")).forEach(e => e.style.display = "");
+        document.getElementById(`barChart-${id}`).removeAttribute("height");
+        document.getElementById(`barChart-${id}`).removeAttribute("width");
+        alert("It's downloading the file, please check your download list in your browser later...");
+      }
+    )
+  };
+
   return (
     <div className={styles.graphFrame} id={`frame-${id}`} onClick={handleClick}>
       <div className={styles.frameHeader}>
         <h2 className={styles.title}>Chart Title</h2>
+        <button title='download' className={styles.deleteGraph} onClick={() => handleDownload({ id })}>
+          ↓
+        </button>
         <button className={styles.deleteGraph} onClick={() => handleDelete({ id })}>
           X
         </button>
