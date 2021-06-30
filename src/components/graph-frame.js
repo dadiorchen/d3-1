@@ -31,7 +31,7 @@ const GraphFrame = (props) => {
         Array.from(document.getElementsByClassName("GraphFrame_deleteGraph__3ldRg")).forEach(e => e.style.display = "");
         document.getElementById(`barChart-${id}`).removeAttribute("height");
         document.getElementById(`barChart-${id}`).removeAttribute("width");
-        alert("It's downloading the file, please check your download list in your browser later...");
+        setTimeout(() => alert("It's downloading the file, please check your download list in your browser later..."),0);
       }
     )
   };
