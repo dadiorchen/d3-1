@@ -42,7 +42,7 @@ const GraphFrame = (props) => {
     <div className={styles.graphFrame} id={`frame-${id}`} onClick={handleClick}>
       <div className={styles.frameHeader}>
         <h2 className={styles.title}>Chart Title</h2>
-        <button title='download' className={styles.deleteGraph} onClick={() => handleDownload({ id })}>
+        <button title='download' className={styles.deleteGraph} onClick={(e) => {e.stopPropagation();e.preventDefault();handleDownload({ id })}}>
           ↓
         </button>
         <button className={styles.deleteGraph} onClick={(e) => {e.stopPropagation();e.preventDefault();handleDelete({ id })}} >
